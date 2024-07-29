@@ -4,55 +4,56 @@
   background: $white-background-body;
   padding: 7.5px 15px;
   .identifier-register{
-    &-function{
-      padding-top: 30px;
-      padding-bottom: 30px;
-      &-item{
-        position: relative;
-        background: $primary-color;
-        width: 150px;
-        height: 70px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        z-index: 1;
-        margin-bottom: 100px;
-        &:after{
-          content: "";
-          display: block;
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          bottom: 0;
-          z-index: -1;
-          background: $secondary-color;
-        }
-        img{
-          height: 100%;
-          width: auto;
-          margin-right: auto;
-          margin-left: auto;
-        }
-        &.leftItem{
-          transform: skewY(-15deg);
-          &:after{
-            transform: skewY(30deg) translateY(45px);
-          }
-        }
-        &.rightItem{
-          transform: skewY(15deg) translateX(15px) ;
-          &:after{
-            transform: skewY(-30deg) translateY(45px);
-          }
-        }
-      }
+    display: flex;
+    &-strength{
+      min-width: 100px;
+      width: 200px;
     }
 
     &-content{
-      &-intro{}
-      &-camera{}
+      &-intro{
+        &-header{
+          width: fit-content;
+          position: relative;
+          margin-right: auto;
+          margin-left: auto;
+          img{
+            position: absolute;
+          }
+        }
+        &-text{
+          width: 50%;
+          padding: 7.5px 15px;
+          margin-left: auto;
+          background: $primary-color;
+          color: $white-textColor;
+          font-size: 1.25rem;
+        }
+      }
+      &-camera{
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+      }
       &-btn{
+        text-align: center;
         #registerByFile{}
         #registerByCapture{}
+      }
+      @include responsiveMin(992px){
+        &-camera{
+          display: inline-block;
+          vertical-align: middle;
+          width: 60%;
+        }
+        &-btn{
+          display: inline-block;
+          vertical-align: middle;
+          text-align: center;
+          width: 39%;
+          #registerByFile{}
+          #registerByCapture{}
+        }
       }
     }
   }

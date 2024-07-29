@@ -1,12 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import '../scss/Common.scss';
 import '../scss/App.scss';
 import RegisterPreviewPopup from "./RegisterPreviewPopup";
 
-import securityImg from '../image/security.png';
-import accuracyImg from '../image/accuracy.png';
-import speedImg from '../image/speed.png';
-import applicationImg from '../image/versatileApplication.png';
+import strengthImg from '../image/strength.png';
+import headerLineImg from '../image/headerLine.png';
 
 function App() {
     const [showPopup, setShowPopup] = useState(false);
@@ -15,35 +13,49 @@ function App() {
         setShowPopup(!showPopup);
     };
 
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        const constraints = {
+            video: true,
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+                let video = videoRef.current;
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                console.error("Error accessing the camera: ", err);
+            });
+    }, []);
+
+    const handleCanPlay = () => {
+        videoRef.current.play();
+    };
+
     return (
         <div className="App max-width-page">
             <div className="identifier-register margin-bottom-70">
-                <div className="identifier-register-function margin-bottom-50">
-                    <div className="identifier-register-function-item leftItem margin-bottom-15">
-                        <img src={securityImg} alt="identifier Register Fuction"/>
-                    </div>
-                    <div className="identifier-register-function-item rightItem margin-bottom-15">
-                        <img src={accuracyImg} alt="identifier Register Fuction"/>
-                    </div>
-                    <div className="identifier-register-function-item leftItem margin-bottom-15">
-                        <img src={speedImg} alt="identifier Register Fuction"/>
-                    </div>
-                    <div className="identifier-register-function-item rightItem">
-                        <img src={applicationImg} alt="identifier Register Fuction"/>
-                    </div>
+                <div className="identifier-register-strength margin-bottom-50">
+                    <img src={strengthImg} alt="identifier Register Fuction"/>
                 </div>
-                <div className="identifier-register-content">
-                    <div className="identifier-register-intro margin-bottom-50">
-                        <h1 className="identifier-register-intro-header margin-bottom-30">
+                <div className="identifier-register-content margin-left-10">
+                    <div className="identifier-register-content-intro margin-bottom-50">
+                        <h1 className="identifier-register-content-intro-header margin-bottom-70">
                             Facial Recognition System
+                            <img src={headerLineImg} alt="Line"/>
                         </h1>
-                        <p className="identifier-register-intro-content">
+
+                        <p className="identifier-register-content-intro-text">
                             Register an image from an ID or a captured image, and then you will receive an identifier
                             associated with that image.
                         </p>
                     </div>
                     <div className="margin-bottom-50">
-                        <div className="identifier-register-content-camera"></div>
+                        <div className="identifier-register-content-camera">
+                            <video ref={videoRef} width="100%" height="100%" onLoadedMetadata={handleCanPlay}/>
+                        </div>
                         <div className="identifier-register-content-btn">
                             <div id="registerByFile" className="margin-bottom-30">
                                 <button className="btn btn-mainColor" onClick={togglePopup}>Register With File</button>
@@ -54,7 +66,8 @@ function App() {
                             </div>
 
                             <div id="registerByCapture">
-                                <button className="btn btn-mainColor" onClick={togglePopup}>Register With Capture</button>
+                                <button className="btn btn-mainColor" onClick={togglePopup}>Register With Capture
+                                </button>
                                 <RegisterPreviewPopup show={showPopup} handleClose={togglePopup}>
                                     <h2>Popup Content</h2>
                                     <p>This is the content inside the popup.</p>
