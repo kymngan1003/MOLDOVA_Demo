@@ -1,0 +1,34 @@
+$white-background-body: #FEFEFE;
+$white-background-item: #EBEBEB;
+$gray-background: #CCC;
+$primary-color : #003366;
+$secondary-color: #305568;
+$white-textColor: #FFF;
+
+// animation
+
+@mixin keyFrames($name){
+  @keyframes #{$name}{
+    @content;
+  }
+}
+
+// responsive
+
+@mixin responsiveMax($maxW) {
+  @media only screen and (max-width: $maxW) {
+    @content;
+  }
+}
+
+@mixin responsiveMin($minW) {
+  @media only screen and (min-width: $minW) {
+    @content;
+  }
+}
+
+@mixin responsiveSpace($minW, $maxW) {
+  @media only screen and (min-width: $minW) and (max-width: $maxW) {
+    @content;
+  }
+}

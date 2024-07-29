@@ -1,0 +1,91 @@
+@import "_Common.scss";
+
+/* util classes margin */
+$spacings: (
+        "5px": "-5",
+        "7.5px": "-7h",
+        "10px": "-10",
+        "15px": "-15",
+        "20px": "-20",
+        "30px": "-30",
+        "40px": "-40",
+        "50px": "-50",
+        "70px": "-70",
+        "100px": "-100",
+);
+$spacingTypes: "margin", "padding";
+
+$vectors: "", "-left", "-right", "-top", "-bottom";
+
+@each $spacingType in $spacingTypes {
+  @each $value, $unit in $spacings {
+    @each $vector in $vectors {
+      .#{$spacingType}#{$vector}#{$unit} {
+        #{$spacingType}#{$vector}: #{$value};
+      }
+    }
+    .#{$spacingType}-horizontal#{$unit} {
+      #{$spacingType}-left: #{$value};
+      #{$spacingType}-right: #{$value};
+    }
+    .#{$spacingType}-vertical#{$unit} {
+      #{$spacingType}-top: #{$value};
+      #{$spacingType}-bottom: #{$value};
+    }
+  }
+}
+
+// unit class
+img{
+  display: block;
+  width: 100%;
+  font-size: 0;
+}
+.display-block {
+  display: block;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.display-none {
+  display: none;
+}
+
+.btn{
+  padding: 7.5px 15px;
+  display: inline-block;
+  min-height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  @include responsiveMin(768px) {
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+}
+
+.btn-mainColor{
+  background: $primary-color;
+  color: $white-textColor;
+  box-shadow: 5px 5px $secondary-color;
+}
+
+.btn-whiteColor{
+  background: $white-background-item;
+  color: $primary-color;
+  box-shadow: 5px 5px $gray-background;
+}
+
+.max-width-page{
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
