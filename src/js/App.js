@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import '../scss/Common.scss';
 import '../scss/App.scss';
 import RegisterPreviewPopup from "./RegisterPreviewPopup";
+import IdentifyCheck from "./identify_check/IdentifyCheck"
 
 import strengthImg from '../image/strength.png';
 import headerLineImg from '../image/headerLine.png';
@@ -53,7 +54,7 @@ function App() {
                         </p>
                     </div>
                     <div className="margin-bottom-50">
-                        <div className="identifier-register-content-camera">
+                        <div className="identifier-register-content-camera" style={{"display" : "none"}}>
                             <video ref={videoRef} width="100%" height="100%" onLoadedMetadata={handleCanPlay}/>
                         </div>
                         <div className="identifier-register-content-btn">
@@ -83,6 +84,10 @@ function App() {
 
                 </div>
             </div>
+            <div>
+                <IdentifyCheck></IdentifyCheck>
+            </div>
+           
         </div>
     );
 }
