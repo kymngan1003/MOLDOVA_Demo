@@ -5,7 +5,7 @@ import React, { useRef, useState, useEffect } from 'react';
 const IdentifyCheck = () => {
   
   // const [imageSrc, setImageSrc] = useState(null);
-  const [base64, setbase64] = useState(null)
+  // const [base64, setbase64] = useState(null)
   const [distance, setDistance] = useState(null);
   const [similarity, setSimilarity] = useState(null);
   const [id, setId] = useState(null);
@@ -44,7 +44,7 @@ const IdentifyCheck = () => {
       // setImageSrc(canvas.toDataURL('image/png'));
       const base64Image = canvas.toDataURL('image/png');
       const base64String = base64Image.split(',')[1];
-      setbase64(base64String)
+      // setbase64(base64String)
 
       try {
         const response = await fetch('/moldova/v2/identity/check', {
