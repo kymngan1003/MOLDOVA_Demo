@@ -1,49 +1,80 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import '../scss/Common.scss';
 import '../scss/App.scss';
 import RegisterPreviewPopup from "./RegisterPreviewPopup";
-import IdentifyCheck from "./identify_check/IdentifyCheck"
+import IdentifyCheck from "./IdentifyCheck"
 
 import strengthImg from '../image/strength.png';
 import headerLineImg from '../image/headerLine.png';
 
+import useWebcam from './/useWebcam';
 function App() {
-    const [showPopup, setShowPopup] = useState(false);
 
-    const togglePopup = () => {
-        setShowPopup(!showPopup);
-    };
-
-    const videoRef = useRef(null);
-
-    useEffect(() => {
-        const constraints = {
-            video: true,
-        };
-
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then((stream) => {
-                let video = videoRef.current;
-                video.srcObject = stream;
-            })
-            .catch((err) => {
-                console.error("Error accessing the camera: ", err);
-            });
-    }, []);
+    // const videoRef = useRef(null);
+    const videoRef = useWebcam();
+    const canvasRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [imageBase64, setImageBase64] = useState(null);
+    const [isPreviewPopupOpen, setIsPreviewPopupOpen] = useState(false);
 
     const handleCanPlay = () => {
         videoRef.current.play();
     };
 
+    // register by file
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setSelectedImage(imageUrl);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageBase64(reader.result.replace(/^data:image\/(jpeg|png|gif|webp);base64,/, ''));
+            };
+            reader.readAsDataURL(file);
+            setIsPreviewPopupOpen(true);
+        }
+    };
+    const handleClosePopup = () => {
+        setSelectedImage(null);
+        setIsPreviewPopupOpen(false);
+        document.getElementById('fileInput').value = null;
+    };
+
+    //capture
+    const handleCapture = () => {
+        if (videoRef.current && canvasRef.current) {
+            const canvas = canvasRef.current;
+            const context = canvas.getContext('2d');
+            const videoWidth = videoRef.current.videoWidth;
+            const videoHeight = videoRef.current.videoHeight;
+            canvas.width = videoWidth;
+            canvas.height = videoHeight;
+            if (context) {
+                context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+                const imageUrl = canvas.toDataURL('image/png');
+                setIsPreviewPopupOpen(true);
+                const base64String = imageUrl.split(',')[1];
+                setSelectedImage(imageUrl);
+                setImageBase64(base64String);
+            } else {
+                console.error("Failed to get canvas context.");
+            }
+        } else {
+            console.error("Video or canvas reference is null.");
+        }
+    };
+
+
     return (
         <div className="App max-width-page">
             <div className="identifier-register margin-bottom-70">
-                <div className="identifier-register-strength margin-bottom-50">
+                <div className="identifier-register-strength">
                     <img src={strengthImg} alt="identifier Register Fuction"/>
                 </div>
                 <div className="identifier-register-content margin-left-10">
                     <div className="identifier-register-content-intro margin-bottom-50">
-                        <h1 className="identifier-register-content-intro-header margin-bottom-70">
+                        <h1 className="identifier-header margin-bottom-70">
                             Facial Recognition System
                             <img src={headerLineImg} alt="Line"/>
                         </h1>
@@ -53,41 +84,45 @@ function App() {
                             associated with that image.
                         </p>
                     </div>
-                    <div className="margin-bottom-50">
-                        <div className="identifier-register-content-camera" style={{"display" : "none"}}>
+                    <div>
+                        <div className="identifier-register-content-camera">
                             <video ref={videoRef} width="100%" height="100%" onLoadedMetadata={handleCanPlay}/>
+                            <canvas ref={canvasRef} style={{display: 'none'}} width="100%" height="100%"></canvas>
                         </div>
                         <div className="identifier-register-content-btn">
-                            <div id="registerByFile" className="margin-bottom-30">
-                                <button className="btn btn-mainColor" onClick={togglePopup}>Register With File</button>
-                                <RegisterPreviewPopup show={showPopup} handleClose={togglePopup}>
-                                    <h2>Popup Content</h2>
-                                    <p>This is the content inside the popup.</p>
-                                </RegisterPreviewPopup>
+                        <div id="registerByFile" className="margin-bottom-30">
+
+                                <button onClick={() => document.getElementById('fileInput').click()}
+                                        className="btn btn-mainColor">
+                                    Register With File
+                                </button>
+                                <input
+                                    type="file"
+                                    id="fileInput"
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    onChange={handleImageChange}
+                                />
                             </div>
 
                             <div id="registerByCapture">
-                                <button className="btn btn-mainColor" onClick={togglePopup}>Register With Capture
+                                <button className="btn btn-mainColor" onClick={handleCapture}>
+                                    Register With Capture
                                 </button>
-                                <RegisterPreviewPopup show={showPopup} handleClose={togglePopup}>
-                                    <h2>Popup Content</h2>
-                                    <p>This is the content inside the popup.</p>
-                                </RegisterPreviewPopup>
                             </div>
                         </div>
                     </div>
                 </div>
+                {isPreviewPopupOpen && (
+                    <RegisterPreviewPopup
+                        selectedImage={selectedImage}
+                        imageBase64={imageBase64}
+                        handleClosePopup={handleClosePopup} />
+                )}
             </div>
             <div className="identifier-find">
-                <button className="identifier-find-btn btn btn-whiteColor">Find</button>
-                <div className="identifier-find-result">
-
-                </div>
-            </div>
-            <div>
                 <IdentifyCheck></IdentifyCheck>
             </div>
-           
         </div>
     );
 }

@@ -3,24 +3,16 @@
 .App {
   background: $white-background-body;
   padding: 7.5px 15px;
+  overflow: hidden;
   .identifier-register{
     display: flex;
     &-strength{
+      display: flex;
       min-width: 100px;
-      width: 200px;
     }
 
     &-content{
       &-intro{
-        &-header{
-          width: fit-content;
-          position: relative;
-          margin-right: auto;
-          margin-left: auto;
-          img{
-            position: absolute;
-          }
-        }
         &-text{
           width: 50%;
           padding: 7.5px 15px;

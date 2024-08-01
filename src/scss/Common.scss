@@ -36,11 +36,12 @@ $vectors: "", "-left", "-right", "-top", "-bottom";
 }
 
 // unit class
-img{
+img {
   display: block;
   width: 100%;
   font-size: 0;
 }
+
 .display-block {
   display: block;
 }
@@ -53,16 +54,18 @@ img{
   display: none;
 }
 
-.btn{
+.btn {
   padding: 7.5px 15px;
   display: inline-block;
   min-height: 40px;
   font-size: 1rem;
   cursor: pointer;
   border: none;
+  user-select: none;
   @include responsiveMin(768px) {
     &:hover {
       background-color: $secondary-color;
+      color: $white-textColor;
     }
   }
 
@@ -71,21 +74,105 @@ img{
   }
 }
 
-.btn-mainColor{
+.btn-mainColor {
   background: $primary-color;
   color: $white-textColor;
   box-shadow: 5px 5px $secondary-color;
 }
 
-.btn-whiteColor{
+.btn-whiteColor {
   background: $white-background-item;
   color: $primary-color;
   box-shadow: 5px 5px $gray-background;
 }
 
-.max-width-page{
+.max-width-page {
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+}
+.identifier-header{
+  width: fit-content;
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  color: $primary-color;
+  img{
+    position: absolute;
+  }
+}
+.error-messages{
+  list-style-type: none;
+  padding-inline-start: 0;
+  li{
+    color: red;
+  }
+}
+
+//loading
+@keyframes loading {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading {
+  padding: 7.5px 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50px);
+  width: 100px;
+  border-radius: 5px;
+  background-color: $white-background-item;
+
+  .letter {
+    float: left;
+    color: $primary-color;
+    animation: loading 1.6s linear infinite;
+
+    &.l-1 {
+      animation-delay: 0.48s;
+    }
+
+    &.l-2 {
+      animation-delay: 0.6s;
+    }
+
+    &.l-3 {
+      animation-delay: 0.72s;
+    }
+
+    &.l-4 {
+      animation-delay: 0.84s;
+    }
+
+    &.l-5 {
+      animation-delay: 0.96s;
+    }
+
+    &.l-6 {
+      animation-delay: 1.08s;
+    }
+
+    &.l-7 {
+      animation-delay: 1.2s;
+    }
+
+    &.l-8 {
+      animation-delay: 1.32s;
+    }
+
+    &.l-9 {
+      animation-delay: 1.44s;
+    }
+
+    &.l-10 {
+      animation-delay: 1.56s;
+    }
+  }
 }
