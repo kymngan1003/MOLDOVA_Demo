@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import axios from 'axios';
 import '../scss/Common.scss';
 import '../scss/RegisterPopup.scss';
 import RegisterCheckPopup from "./RegisterCheckPopup";
