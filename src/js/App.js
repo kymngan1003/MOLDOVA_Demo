@@ -9,7 +9,6 @@ import headerLineImg from '../image/headerLine.png';
 
 import useWebcam from './common/useWebcam';
 import captureImage from "./common/captureImage";
-import Notification from "./common/notification";
 function App() {
 
     // const videoRef = useRef(null);

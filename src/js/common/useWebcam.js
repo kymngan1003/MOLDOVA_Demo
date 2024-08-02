@@ -11,13 +11,14 @@ const useWebcam = () => {
                     const video = videoRef.current;
                     if (video) {
                         video.srcObject = stream;
+                        video.setAttribute('playsinline', '');
                         video.addEventListener("loadeddata", () => {
                             video.play();
                         });
                     }
                 })
                 .catch((err) => {
-                    console.error("Error accessing webcam: ", err);
+                    alert("Error accessing webcam: " + err);
                 });
         };
         startWebcam();
