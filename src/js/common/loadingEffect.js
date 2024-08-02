@@ -1,5 +1,5 @@
 import React from 'react';
-import '../scss/Common.scss';
+import '../../scss/Common.scss';
 
 const LoadingEffect = () => {
 

@@ -1,9 +1,10 @@
 import React, {useState, useRef} from 'react';
 import '../scss/Common.scss';
 import '../scss/RegisterPopup.scss';
-import useWebcam from './/useWebcam';
-import LoadingEffect from "./loadingEffect";
+import useWebcam from './common/useWebcam';
+import LoadingEffect from "./common/loadingEffect";
 import headerLineImg from "../image/headerLine.png";
+import captureImage from "./common/captureImage";
 const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
     const videoRef = useWebcam();
     const canvasRef = useRef(null);
@@ -14,17 +15,13 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
     const idReplace = apiCreateResult.id;
 
 
-    const captureImage = async () => {
+    const handleCaptureImage = async () => {
         const canvas = canvasRef.current;
         const video = videoRef.current;
 
         if (canvas && video) {
-            const context = canvas.getContext("2d");
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const base64Image = canvas.toDataURL("image/png");
-            const base64String = base64Image.split(",")[1];
+            const imageCaptureUrl = captureImage(videoRef);
+            const base64String = imageCaptureUrl.split(",")[1];
 
             setLoading(true);
             setErrorMessage('');
@@ -83,7 +80,7 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
                             </ul>
                         )}
                         <div className="btn-group">
-                            <button className="btn btn-mainColor margin-right-15" onClick={captureImage}>Retry</button>
+                            <button className="btn btn-mainColor margin-right-15" onClick={handleCaptureImage}>Retry</button>
                             <button className="btn btn-mainColor" onClick={handleClosePopup}>Complete</button>
                         </div>
                         {loading && (<LoadingEffect></LoadingEffect>)}

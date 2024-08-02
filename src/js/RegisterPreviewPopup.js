@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../scss/Common.scss';
 import '../scss/RegisterPopup.scss';
 import RegisterCheckPopup from "./RegisterCheckPopup";
-import LoadingEffect from "./loadingEffect";
+import LoadingEffect from "./common/loadingEffect";
 import headerLineImg from "../image/headerLine.png";
 
 const RegisterPreviewPopup = ({selectedImage, imageBase64, handleClosePopup}) => {
@@ -11,7 +11,7 @@ const RegisterPreviewPopup = ({selectedImage, imageBase64, handleClosePopup}) =>
     const [apiResult, setApiResult] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const apiCreateCall = async () => {
+    const createApiCall = async () => {
         const randomId = Math.floor(Math.random() * 10000000);
         setLoading(true);
         setErrorMessage('');
@@ -70,7 +70,7 @@ const RegisterPreviewPopup = ({selectedImage, imageBase64, handleClosePopup}) =>
                         )}
                         <div className="btn-group">
                             <button className="btn btn-mainColor margin-right-15"
-                                    onClick={apiCreateCall}
+                                    onClick={createApiCall}
                             >Create
                             </button>
                             <button className="btn btn-mainColor" onClick={handleClosePopup}>Close</button>

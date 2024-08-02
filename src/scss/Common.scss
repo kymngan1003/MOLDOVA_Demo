@@ -176,3 +176,60 @@ img {
     }
   }
 }
+
+//Notification
+@keyframes notiRun {
+  0%{
+    transform: translateX(315px);
+    opacity: 0;
+  }
+  30%{
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  90%{
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  90%{
+    transform: translateX(0px);
+    opacity: 0;
+  }
+}
+.notification-popup{
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  z-index: 999;
+  padding: 7.5px 15px;
+  max-width: 300px;
+  transform: translateX(315px);
+  opacity: 0;
+  animation: notiRun 3s ease-in-out backwards;
+  text-align: left;
+  &.success{
+    background: #e0efd8;
+    color: #044104;
+  }
+  &.warning{
+    background: #f7f7a4;
+    color: #4d4d20;
+  }
+  &.error{
+    background: #f2dedf;
+    color: #ff0000;
+  }
+  &.info{
+    background: #d9edf6;
+    color: #0000ff;
+  }
+  &-header{
+    font:{
+      size: 1.25rem;
+      weight: 600;
+    };
+    .icon{
+      font-size: 1.25rem;
+    }
+  }
+}

@@ -7,7 +7,9 @@ import IdentifyCheck from "./IdentifyCheck"
 import strengthImg from '../image/strength.png';
 import headerLineImg from '../image/headerLine.png';
 
-import useWebcam from './/useWebcam';
+import useWebcam from './common/useWebcam';
+import captureImage from "./common/captureImage";
+import Notification from "./common/notification";
 function App() {
 
     // const videoRef = useRef(null);
@@ -44,22 +46,12 @@ function App() {
     //capture
     const handleCapture = () => {
         if (videoRef.current && canvasRef.current) {
-            const canvas = canvasRef.current;
-            const context = canvas.getContext('2d');
-            const videoWidth = videoRef.current.videoWidth;
-            const videoHeight = videoRef.current.videoHeight;
-            canvas.width = videoWidth;
-            canvas.height = videoHeight;
-            if (context) {
-                context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-                const imageUrl = canvas.toDataURL('image/png');
-                setIsPreviewPopupOpen(true);
-                const base64String = imageUrl.split(',')[1];
-                setSelectedImage(imageUrl);
-                setImageBase64(base64String);
-            } else {
-                console.error("Failed to get canvas context.");
-            }
+            const imageCaptureUrl = captureImage(videoRef);
+            setIsPreviewPopupOpen(true);
+            const base64String = imageCaptureUrl.split(',')[1];
+            setSelectedImage(imageCaptureUrl);
+            setImageBase64(base64String);
+
         } else {
             console.error("Video or canvas reference is null.");
         }
