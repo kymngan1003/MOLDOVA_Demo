@@ -77,7 +77,7 @@ const IdentifyCheck = () => {
             setDeleteLoading(false)
             setTimeout(() => {
                 setIsDelete(false);
-            }, 3000);
+            }, 4000);
 
         } catch (error) {
             setErrorMessage(error.message.split(', '));

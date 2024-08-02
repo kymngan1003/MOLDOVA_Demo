@@ -183,15 +183,15 @@ img {
     transform: translateX(315px);
     opacity: 0;
   }
-  30%{
+  25%{
     transform: translateX(0px);
     opacity: 1;
   }
-  90%{
+  95%{
     transform: translateX(0px);
     opacity: 1;
   }
-  90%{
+  95%{
     transform: translateX(0px);
     opacity: 0;
   }
@@ -205,7 +205,7 @@ img {
   max-width: 300px;
   transform: translateX(315px);
   opacity: 0;
-  animation: notiRun 3s ease-in-out backwards;
+  animation: notiRun 4s ease-in-out backwards;
   text-align: left;
   &.success{
     background: #e0efd8;

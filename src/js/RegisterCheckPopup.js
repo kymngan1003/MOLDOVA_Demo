@@ -47,6 +47,7 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
                 setImageUrl(`data:image/png;base64,${base64Image}`);
             } catch (error) {
                 setErrorMessage(error.message.split(', '));
+                setImageUrl(imageCaptureUrl);
             } finally {
                 setLoading(false);
             }
