@@ -89,7 +89,7 @@ const IdentifyCheck = () => {
 
     return (
         <div className="identifier-find-component">
-            <button className="identifier-find-btn btn btn-whiteColor" onClick={findApiCall}>Find</button>
+            <button className="identifier-find-btn btn btn-mainColor margin-vertical-50" onClick={findApiCall}>Find</button>
             <div>
                 <video ref={videoRef} style={{display: "none"}}/>
                 <canvas ref={canvasRef} style={{display: "none"}}/>
@@ -104,7 +104,7 @@ const IdentifyCheck = () => {
                     </ul>
                 )}
                 {!loading && dataFetched && data && (
-                    <div className="result margin-top-20">
+                    <div className="result margin-bottom-50">
                         <div className="image-result">
                             {imageSrc && (
                                 <img src={imageSrc} alt="Captured" className="images-find"/>

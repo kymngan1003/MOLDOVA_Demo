@@ -5,6 +5,7 @@ const useWebcam = () => {
 
     useEffect(() => {
         const startWebcam = () => {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices
                 .getUserMedia({ video: true })
                 .then((stream) => {
@@ -20,6 +21,9 @@ const useWebcam = () => {
                 .catch((err) => {
                     alert("Error accessing webcam: " + err);
                 });
+        } else {
+                alert('Media Devices API not supported.');
+            }
         };
         startWebcam();
     }, []);

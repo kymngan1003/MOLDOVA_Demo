@@ -5,7 +5,7 @@ import RegisterCheckPopup from "./RegisterCheckPopup";
 import LoadingEffect from "./common/loadingEffect";
 import headerLineImg from "../image/headerLine.png";
 
-const RegisterPreviewPopup = ({selectedImage, imageBase64, handleClosePopup}) => {
+const RegisterPreviewPopup = ({selectedImage, imageBase64, handleClosePopup, onGetHistoryData}) => {
     const [isCheckPopupOpen, setIsCheckPopupOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [apiResult, setApiResult] = useState(null);
@@ -83,6 +83,7 @@ const RegisterPreviewPopup = ({selectedImage, imageBase64, handleClosePopup}) =>
                     <RegisterCheckPopup
                         apiCreateResult={apiResult}
                         handleClosePopup={handleClosePopup}
+                        onGetHistoryData={onGetHistoryData}
                     />
                 )}
 

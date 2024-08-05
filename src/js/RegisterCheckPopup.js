@@ -5,7 +5,7 @@ import useWebcam from './common/useWebcam';
 import LoadingEffect from "./common/loadingEffect";
 import headerLineImg from "../image/headerLine.png";
 import captureImage from "./common/captureImage";
-const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
+const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup,onGetHistoryData}) => {
     const videoRef = useWebcam();
     const canvasRef = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -13,6 +13,10 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
     const base64String = apiCreateResult.image;
     const [imageUrl, setImageUrl] = useState(`data:image/png;base64,${base64String}`);
     const idReplace = apiCreateResult.id;
+    const [historyItem, setHistoryItem] = useState({
+        id: apiCreateResult.id,
+        image: `data:image/png;base64,${base64String}`
+    });
 
 
     const handleCaptureImage = async () => {
@@ -44,7 +48,13 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
 
                 const result = await response.json();
                 const base64Image = result.image;
-                setImageUrl(`data:image/png;base64,${base64Image}`);
+                const newImageUrl = `data:image/png;base64,${base64Image}`;
+
+                setImageUrl(newImageUrl);
+                setHistoryItem((prevState) =>({
+                    ...prevState,
+                    image: newImageUrl
+                }));
             } catch (error) {
                 setErrorMessage(error.message.split(', '));
                 setImageUrl(imageCaptureUrl);
@@ -53,6 +63,10 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
             }
         }
     };
+    const handleSendHistory = () => {
+        onGetHistoryData(historyItem);
+        handleClosePopup();
+    }
 
 
     return (
@@ -82,7 +96,7 @@ const RegisterCheckPopup = ({ apiCreateResult,handleClosePopup}) => {
                         )}
                         <div className="btn-group">
                             <button className="btn btn-mainColor margin-right-15" onClick={handleCaptureImage}>Retry</button>
-                            <button className="btn btn-mainColor" onClick={handleClosePopup}>Complete</button>
+                            <button className="btn btn-mainColor" onClick={handleSendHistory}>Complete</button>
                         </div>
                         {loading && (<LoadingEffect></LoadingEffect>)}
                     </div>

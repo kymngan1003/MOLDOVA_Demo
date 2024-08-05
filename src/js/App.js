@@ -9,6 +9,7 @@ import headerLineImg from '../image/headerLine.png';
 
 import useWebcam from './common/useWebcam';
 import captureImage from "./common/captureImage";
+import RegistrationHistory from "./RegistrationHistory";
 function App() {
 
     // const videoRef = useRef(null);
@@ -17,6 +18,7 @@ function App() {
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageBase64, setImageBase64] = useState(null);
     const [isPreviewPopupOpen, setIsPreviewPopupOpen] = useState(false);
+    const [history, setHistory] = useState([]);
 
     const handleCanPlay = () => {
         videoRef.current.play();
@@ -55,6 +57,16 @@ function App() {
             console.error("Video or canvas reference is null.");
         }
     };
+
+    const handleReceiveHistory = (historyData) => {
+        setHistory(prevHistory => {
+            const newHistory = [...prevHistory, historyData];
+            if (newHistory.length > 5) {
+                newHistory.shift();
+            }
+            return newHistory;
+        });
+    }
 
 
     return (
@@ -108,9 +120,16 @@ function App() {
                     <RegisterPreviewPopup
                         selectedImage={selectedImage}
                         imageBase64={imageBase64}
-                        handleClosePopup={handleClosePopup} />
+                        handleClosePopup={handleClosePopup}
+                        onGetHistoryData={handleReceiveHistory}
+                    />
                 )}
             </div>
+            {history && history.length > 0 ? (
+                <RegistrationHistory historyList={history}></RegistrationHistory>
+            ):(
+                <></>
+            )}
             <div className="identifier-find">
                 <IdentifyCheck></IdentifyCheck>
             </div>

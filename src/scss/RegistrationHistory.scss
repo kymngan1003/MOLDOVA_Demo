@@ -1,0 +1,28 @@
+@import "_Common.scss";
+
+.history{
+  background: $primary-color;
+  padding: 15px;
+  &-header{
+    color: $white-textColor;
+  }
+  &-item{
+    width: 48%;
+    padding: 7.5px 15px;
+    margin: 15px 1%;
+    display: inline-block;
+    background: $white-background-item;
+    border-radius: 5px;
+    @include responsiveMin(597px){
+      width: 31.33%;
+    }
+    @include responsiveMin(768px){
+    width: 18%;
+  }
+    &-img{}
+    &-number{
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+}
