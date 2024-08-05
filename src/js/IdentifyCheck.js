@@ -4,8 +4,9 @@ import '../scss/IdentifyCheck.scss'
 import useWebcam from './common/useWebcam';
 import captureImage from "./common/captureImage";
 import Notification from "./common/notification";
+import RegisterCheckPopup from "./RegisterCheckPopup";
 
-const IdentifyCheck = () => {
+const IdentifyCheck = ({onGetHistoryData}) => {
     const [imageSrc, setImageSrc] = useState(null);
 
     const [data, setData] = useState(null);
@@ -16,6 +17,9 @@ const IdentifyCheck = () => {
     const canvasRef = useRef(null);
     const [isDelete, setIsDelete] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const [isCheckPopupOpen, setIsCheckPopupOpen] = useState(false);
+    const [editedData, setEditedData] = useState(false);
 
     const findApiCall = async () => {
         const canvas = canvasRef.current;
@@ -87,14 +91,54 @@ const IdentifyCheck = () => {
         }
     }
 
+    const handleEditImage = async (id, image) =>{
+        const base64String = image.replace(/^data:image\/(jpeg|png|gif|webp);base64,/, '');
+        setLoading(true);
+        setErrorMessage('');
+        try {
+            const response = await fetch('/moldova/v2/identity/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: base64String
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessages = errorData.map(error => error.defaultMessage);
+                throw new Error(errorMessages.join(', '));
+            }
+
+            const result = await response.json();
+            setIsCheckPopupOpen(true);
+            setLoading(true);
+            setEditedData({
+                id: id,
+                image: result.image
+            });
+
+        } catch (error) {
+            setErrorMessage(error.message.split(', '));
+            setIsCheckPopupOpen(false);
+        } finally {
+            setLoading(false);
+        }
+    }
+    const handleCloseCheckPopup = () => {
+        setIsCheckPopupOpen(false);
+    };
+
     return (
         <div className="identifier-find-component">
+            {loading && (<LoadingEffect></LoadingEffect>)}
             <button className="identifier-find-btn btn btn-mainColor margin-vertical-50" onClick={findApiCall}>Find</button>
             <div>
                 <video ref={videoRef} style={{display: "none"}}/>
                 <canvas ref={canvasRef} style={{display: "none"}}/>
-
-                {loading && (<LoadingEffect></LoadingEffect>)}
+                
                 {deleteLoading && (<LoadingEffect></LoadingEffect>)}
                 {errorMessage.length > 0 && (
                     <ul className="error-messages margin-top-20">
@@ -114,7 +158,16 @@ const IdentifyCheck = () => {
                             <p className="margin-top-20">ID: {data.id}</p>
                             <p className="margin-top-10">Distance: {data.distance.toFixed(1)}</p>
                             <p className="margin-top-10">Similarity: {data.similarity.toFixed(1)}</p>
-                            <button className="margin-top-15 btn btn-whiteColor" onClick={deleteApiCall}>Delete</button>
+                            <div className="btn-group margin-top-15 ">
+                                <button className="margin-right-20 btn btn-whiteColor"
+                                        onClick={() => handleEditImage(data.id, imageSrc)}>
+                                    Edit
+                                </button>
+                                <button className="btn btn-whiteColor" onClick={deleteApiCall}>
+                                    Delete
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 )}
@@ -122,6 +175,13 @@ const IdentifyCheck = () => {
                     <Notification type="success" message="Facial recognition deregistration successfu"></Notification>
                 )}
             </div>
+            {isCheckPopupOpen && (
+                <RegisterCheckPopup
+                    apiCreateResult={editedData}
+                    handleClosePopup={handleCloseCheckPopup}
+                    onGetHistoryData={onGetHistoryData}
+                />
+            )}
         </div>
     );
 };

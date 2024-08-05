@@ -131,7 +131,9 @@ function App() {
                 <></>
             )}
             <div className="identifier-find">
-                <IdentifyCheck></IdentifyCheck>
+                <IdentifyCheck
+                    onGetHistoryData={handleReceiveHistory}
+                ></IdentifyCheck>
             </div>
         </div>
     );
