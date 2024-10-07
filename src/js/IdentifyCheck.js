@@ -156,8 +156,8 @@ const IdentifyCheck = ({onGetHistoryData}) => {
                         </div>
                         <div className="contents">
                             <p className="margin-top-20">ID: {data.id}</p>
-                            <p className="margin-top-10">Distance: {data.distance.toFixed(1)}</p>
-                            <p className="margin-top-10">Similarity: {data.similarity.toFixed(1)}</p>
+                            {/*<p className="margin-top-10">Distance: {data.distance.toFixed(1)}</p>*/}
+                            {/*<p className="margin-top-10">Similarity: {data.similarity.toFixed(1)}</p>*/}
                             <div className="btn-group margin-top-15 ">
                                 <button className="margin-right-20 btn btn-whiteColor"
                                         onClick={() => handleEditImage(data.id, imageSrc)}>
